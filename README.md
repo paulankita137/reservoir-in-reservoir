@@ -1,3 +1,4 @@
+![Figure 2023-02-21 133609](https://user-images.githubusercontent.com/53861279/220430733-d0fcc331-a418-47fe-903b-a956f3275df5.png)
 # Online-Learning-with-Reservoirs
 
 
