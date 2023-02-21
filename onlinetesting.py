@@ -62,18 +62,18 @@ def training(Network, f, f_out, h, init_steps, training_steps, p):
     Network.Gen.reset_activity()
     Network.Per.reset_activity()
 
-    for t in range(5000):
+    for t in range(500):
         
         Network.Gen.step(f, t, f_out=f_out, h=h)
         Network.Per.step(f, t)
 
     print("STARTING TRAINING")
     
-    f = f[init_steps:training_steps]
-    
     #f = f[init_steps:training_steps]
+    
+    f = f[0:500]
 
-    f_out = f_out[init_steps:training_steps]
+    f_out = f_out[0:500]
 
     if h != None:
         h = h[init_steps:]
@@ -160,7 +160,7 @@ m = []
 
 #f_out = np.zeros((length, 1, 1))
 
-f_out = np.zeros((1000, 1, 1))
+f_out = np.zeros((5000, 1, 1))
 
 # for i in range(len(f_out)):
 #         f_out[i][0][0] = np.arcsin(np.sin(2*np.pi*i*dt*10))+np.sin(4*np.pi*i*dt)
@@ -178,7 +178,7 @@ f_out = np.zeros((1000, 1, 1))
 
 
 
-for d in range(1000):
+for d in range(5000):
     f_out[d][0][0] = rawvalues[d]
 
 
@@ -268,6 +268,18 @@ def test(Network, f, f_out, h, train_end):
     for t in range(len(f)):
         x[t] = Network.step(f, t)
         MSE += np.sum((x[t] - f_out[t])**2)
+        
+        MSE = MSE/ len(f)
+        #print(MSE)
+        if MSE >0.25 : 
+            training(Network=N, \
+        f=f_in, \
+        f_out=f_out, \
+        h=h, \
+        init_steps=init_steps, \
+        training_steps=train_steps, \
+        p=p)
+
 
     MSE = MSE / len(f)
     print(f"MSE: {MSE}")
