@@ -30,17 +30,7 @@ def orig_system_test(dt, showplots=0):
     t = np.expand_dims(np.linspace(0,2,2*dt_per_s+1),1)
     omega = np.zeros((2*dt_per_s+1,1))
     omega = np.linspace(2*np.pi, 6*np.pi, 1*dt_per_s+1)
-    targ = np.zeros((2*dt_per_s+1,1))
-    targ[0:(1*dt_per_s+1),0] = np.sin(t[0:(1*dt_per_s+1),0]*omega)
-    targ[1*dt_per_s:(2*dt_per_s+1)] = -np.flipud(targ[0:(1*dt_per_s+1)])
-    #print('sine target shape',targ.shape)
 
-    # omega = np.ones((2*dt_per_s,1)) * 4 *np.pi
-    # targ = np.sin(t*2*omega) * np.sin(t*omega/4)
-
-
-    #for i in range(len(targ)):
-	   #   targ[i][0] = np.arcsin(np.sin(2*np.pi*i*dt*10))
 
 
    #momentum prediction
