@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Sep  8 13:49:29 2023
 
-@author: ANKITA PAUL
-"""
 
 # -*- coding: utf-8 -*-
 """
@@ -150,7 +145,7 @@ def system_change_test(dt, showplots=0):
 orig_system_test(dt=0.001,showplots=1)
 #system_change_test(dt=0.001,showplots=1)
 
-import FF_Demo
+import reservoirfunctions
 import pickle
 import os
 
@@ -166,14 +161,14 @@ def YYO(n1,n2):
      for j in range (1,10):
        print(j)
        alpha = j/10.0
-       p = FF_Demo.create_parameters(network_size=i,dt=0.001,ff_alpha=alpha)
+       p = reservoirfunctions.create_parameters(network_size=i,dt=0.001,ff_alpha=alpha)
        p['g'] = 1.5 # From paper
        p['ff_num_batches'] = 10
        p['ff_trials_per_batch'] = 10
        p['test_init_trials']=10
        p['network size']=i
        p['ff_alpha']=alpha
-       rnn1 = FF_Demo.RNN(p,1,1)
+       rnn1 = reservoirfunctions.reservoir(p,1,1)
        rnn1.train(orig_system_test, monitor_training=1)
        enorm0,output0,target0= rnn1.test(orig_system_test)
        #outputs.append(output0)
