@@ -1,17 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Sep  8 08:58:45 2023
-
-@author: ANKITA PAUL
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Sep  6 08:46:54 2023
-
-@author: ANKITA PAUL
-"""
-
 
 
 
@@ -51,14 +37,8 @@ def create_parameters(network_size,ff_alpha,dt=0.001,**kwargs):
     }
     return p
 
-class RNN:
-    '''
-    Creates an RNN object. Relevant methods:
-        __init___:             Creates attributes for hyperparameters, network parameters, and initial activity
-        initialize_act:     Resets the activity
-        run:                 Runs the network forward given some input
-        train:                Uses one of several algorithms to train the network.
-    '''
+class Reservoir:
+   
 
     def __init__(self, hyperparameters, num_inputs, num_outputs):
         '''Initialize the network
