@@ -10,9 +10,7 @@ import matplotlib.pyplot as plt
 
 
 def create_parameters(network_size,ff_alpha,dt=0.001,**kwargs):
-    '''Use this to define hyperparameters for any RNN instantiation. You can create an "override" script to 
-    edit any individual parameters, but simply calling this function suffices. Use the output dictionary to 
-    instantiate an RNN class'''
+    
     p = {'network_size': network_size,              # Number of units in network
         'dt': dt,                         # Time step for RNN.
         'tau': 0.01,                     # Time constant of neurons
@@ -42,14 +40,7 @@ class Reservoir:
 
     def __init__(self, hyperparameters, num_inputs, num_outputs):
         '''Initialize the network
-        Inputs:
-            hyperparameters: should be output of create_parameters function, changed as needed
-            num_inputs: number of inputs into the network
-            num_outputs: number of outputs the network has
-        Outputs:
-            self.p: Assigns hyperparameters to an attribute
-            self.rnn_par: Creates parameters for network that can be optimized (all weights and node biases)
-            self.act: Initializes the activity of the network'''
+    
         self.p = hyperparameters
         rnn_size = self.p['network_size']
         self.rnn_par = {'inp_weights': (npr.rand(num_inputs, rnn_size)-0.5) * 2 * self.p['inp_scale'],
@@ -108,25 +99,7 @@ class Reservoir:
 
 
     def train(self,inps_and_targs, monitor_training=0, **kwargs):
-        '''Use this method to train the RNN using one of several training algorithms!
-        Inputs:
-            inps_and_targs: This should be a FUNCTION that randomly produces a training input and a target function
-                            Those should have individual inputs/targets as columns and be the first two outputs 
-                            of this function. Should also take a 'dt' argument.
-            monitor_training: Collect useful statistics and show at the end
-            **kwargs: use to pass things to the inps_and_targs function
-        Outputs:
-        Nothing explicitly, but the weights of self.rnn_par are optimized to map the inputs to the targets
-        Use this to train the network according to the full-FORCE algorithm, described in DePasquale 2017
-        This function uses a recursive least-squares algorithm to optimize the network.
-        Note that after each batch, the function shows an example output as well as recurrent unit activity.
-        Parameters: 
-            In self.p, the parameters starting with ff_ control this function. 
-
-        *****NOTE***** The function inps_and_targs must have a third output of "hints" for training.
-        If you don't want to use hints, replace with a vector of zeros (Nx1)
-
-        '''
+        
         # First, initialize some parameters
         p = self.p
         self.initialize_act()
