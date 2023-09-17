@@ -31,25 +31,23 @@ import matplotlib.pyplot as plt
 
 
 def create_parameters(network_size,ff_alpha,dt=0.001,**kwargs):
-    '''Use this to define hyperparameters for any RNN instantiation. You can create an "override" script to 
-    edit any individual parameters, but simply calling this function suffices. Use the output dictionary to 
-    instantiate an RNN class'''
-    p = {'network_size': network_size,              # Number of units in network
-        'dt': dt,                         # Time step for RNN.
-        'tau': 0.01,                     # Time constant of neurons
-        'noise_std': 0,                    # Amount of noise on RNN neurons
-        'g': 1,                         # Gain of the network (scaling for recurrent weights)
-        'p': 1,                            # Controls the sparseness of the network. 1=>fully connected.
-        'inp_scale': 1,                 # Scales the initialization of input weights
-        'out_scale': 1,                 # Scales the initialization of output weights
-        'bias_scale': 0,                # Scales the amount of bias on each unit
-        'init_act_scale' : 1,            # Scales how activity is initialized
-        ##### Training parameters for full-FORCE 
-        'ff_steps_per_update': 2 ,  # Average number of steps per weight update
+    
+    p = {'network_size': network_size,              
+        'dt': dt,                         
+        'tau': 0.01,                    
+        'noise_std': 0,                    
+        'g': 1,                        
+        'p': 1,                            
+        'inp_scale': 1,                
+        'out_scale': 1,                
+        'bias_scale': 0,              
+        'init_act_scale' : 1,          
+        
+        'ff_steps_per_update': 2 , 
         'ff_alpha': ff_alpha,
-          # "Learning rate" parameter (should be between 1 and 100)
+          
         'ff_num_batches': 10,
-        'ff_trials_per_batch': 100,  # Number of inputs/targets to go through
+        'ff_trials_per_batch': 100,  
         'ff_init_trials': 3,
         #### Testing parameters
         'test_trials': 10,
@@ -59,24 +57,10 @@ def create_parameters(network_size,ff_alpha,dt=0.001,**kwargs):
     return p
 
 class Reservoir:
-    '''
-    Creates an RNN object. Relevant methods:
-        __init___:             Creates attributes for hyperparameters, network parameters, and initial activity
-        initialize_act:     Resets the activity
-        run:                 Runs the network forward given some input
-        train:                Uses one of several algorithms to train the network.
-    '''
+   
 
     def __init__(self, hyperparameters, num_inputs, num_outputs):
-        '''Initialize the network
-        Inputs:
-            hyperparameters: should be output of create_parameters function, changed as needed
-            num_inputs: number of inputs into the network
-            num_outputs: number of outputs the network has
-        Outputs:
-            self.p: Assigns hyperparameters to an attribute
-            self.rnn_par: Creates parameters for network that can be optimized (all weights and node biases)
-            self.act: Initializes the activity of the network'''
+        
         self.p = hyperparameters
         rnn_size = self.p['network_size']
         self.rnn_par = {'inp_weights': (npr.rand(num_inputs, rnn_size)-0.5) * 2 * self.p['inp_scale'],
@@ -89,20 +73,11 @@ class Reservoir:
 
 
     def initialize_act(self):
-        '''Any time you want to reset the activity of the network to low random values'''
+        
         self.act = npr.randn(1,self.rnn_par['rec_weights'].shape[0])*self.p['init_act_scale']
 
     def run(self,inputs, record_flag=0):
-        '''Use this method to run the RNN on some inputs
-        Inputs:
-            inputs: An Nxm array, where m is the number of separate inputs and N is the number of time steps
-            record_flag: If set to 0, the function only records the output node activity
-                If set to 1, if records that and the activity of every hidden node over time
-        Outputs:
-            output_whole: An Nxk array, where k is the number of separate outputs and N is the number of time steps
-            activity_whole: Either an empty array if record_flag=0, or an NxQ array, where Q is the number of hidden units
-
-        '''
+       
         p = self.p
         activity = self.act
         rnn_params = self.rnn_par
@@ -135,25 +110,7 @@ class Reservoir:
 
 
     def train(self,inps_and_targs, monitor_training=0, **kwargs):
-        '''Use this method to train the RNN using one of several training algorithms!
-        Inputs:
-            inps_and_targs: This should be a FUNCTION that randomly produces a training input and a target function
-                            Those should have individual inputs/targets as columns and be the first two outputs 
-                            of this function. Should also take a 'dt' argument.
-            monitor_training: Collect useful statistics and show at the end
-            **kwargs: use to pass things to the inps_and_targs function
-        Outputs:
-        Nothing explicitly, but the weights of self.rnn_par are optimized to map the inputs to the targets
-        Use this to train the network according to the full-FORCE algorithm, described in DePasquale 2017
-        This function uses a recursive least-squares algorithm to optimize the network.
-        Note that after each batch, the function shows an example output as well as recurrent unit activity.
-        Parameters: 
-            In self.p, the parameters starting with ff_ control this function. 
-
-        *****NOTE***** The function inps_and_targs must have a third output of "hints" for training.
-        If you don't want to use hints, replace with a vector of zeros (Nx1)
-
-        '''
+        
         # First, initialize some parameters
         p = self.p
         self.initialize_act()
